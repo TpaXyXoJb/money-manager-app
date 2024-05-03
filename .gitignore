@@ -1,0 +1,15 @@
+/client/build
+/server/staticfiles
+/server/media
+/server/config/settings/secret_keys.py
+/server/apps/scripts/index.html
+.DS_Store
+.idea
+.vscode
+*.log
+*.pyc
+**/__pycache__/
+*.sql
+*.7z
+/pg_data
+.env

@@ -1,8 +1,8 @@
 import os
 from pathlib import Path
+from datetime import timedelta
 
 import dj_database_url
-
 
 BASE_DIR = Path(__file__).parents[2]
 SECRET_KEY = '!6xmo&@!7dzw8p6yxjnj&&1lur%4+fs!r2tuzb#6j(64s@m6)*'
@@ -102,7 +102,6 @@ if not DEBUG:
         },
     ]
 
-
 ##################################################################
 # Static files settings (CSS, JavaScript, Images)
 ##################################################################
@@ -128,9 +127,15 @@ FILE_UPLOAD_DIRECTORY_PERMISSIONS = 0o777
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
+
+##################################################################
+# Custom user settings
+##################################################################
+
+AUTH_USER_MODEL = 'users.User'
 
 ##################################################################
 # Default auto field settings
@@ -139,15 +144,27 @@ REST_FRAMEWORK = {
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 ##################################################################
+# Simple jwt settings
+##################################################################
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=1),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
+    "ROTATE_REFRESH_TOKENS": False,
+}
+
+##################################################################
 # Debug toolbar settings
 ##################################################################
 
 if DEBUG:
     from .installed_apps import INSTALLED_APPS
 
+
     def show_toolbar(request):
         from django.conf import settings
         return settings.DEBUG
+
 
     DEBUG_TOOLBAR_CONFIG = {
         'SHOW_TOOLBAR_CALLBACK': show_toolbar,
