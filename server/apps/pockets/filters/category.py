@@ -4,9 +4,9 @@ from ..models.category import Category
 
 
 class CategoryFilter(FilterSet):
-    date = DateFilter(field_name='transaction__date')
-    start_date = DateFilter(field_name='transaction__date', lookup_expr='gte')
-    end_date = DateFilter(field_name='transaction__date', lookup_expr='lte')
+    date = DateFilter(field_name='transaction__date', label='Date')
+    start_date = DateFilter(field_name='transaction__date', lookup_expr='gte', label='From')
+    end_date = DateFilter(field_name='transaction__date', lookup_expr='lte', label='To')
 
     class Meta:
         model = Category

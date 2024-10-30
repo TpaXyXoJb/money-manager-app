@@ -1,5 +1,4 @@
 from django.db import models
-from datetime import date
 
 
 class Transaction(models.Model):
@@ -20,7 +19,7 @@ class Transaction(models.Model):
     )
     date = models.DateField(
         verbose_name='date',
-        default=date.today
+        auto_now_add=True
     )
 
     class Meta:

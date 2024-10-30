@@ -17,6 +17,7 @@ from ..models.transaction import Transaction
 from ..serializers.transaction import TransactionSerializer
 from ..filters.transaction import TransactionFilter
 from ..paginators import TransactionSetPagination
+from ..permissions import IsOwner
 
 
 class TransactionViewSet(CreateModelMixin,
@@ -28,7 +29,7 @@ class TransactionViewSet(CreateModelMixin,
     pagination_class = TransactionSetPagination
     filter_backends = (DjangoFilterBackend,)
     filterset_class = TransactionFilter
-    permission_classes = [IsAuthenticated, ]
+    permission_classes = [IsAuthenticated, IsOwner, ]
 
     def get_queryset(self):
         return self.filter_queryset(Transaction.objects.all())

@@ -14,6 +14,7 @@ from django.db.models.functions import Coalesce
 from ..models.category import Category
 from ..serializers.category import CategorySerializer
 from ..filters.category import CategoryFilter
+from ..permissions import IsOwner
 
 
 class CategoryViewSet(CreateModelMixin,
@@ -21,7 +22,7 @@ class CategoryViewSet(CreateModelMixin,
                       ListModelMixin,
                       GenericViewSet):
     serializer_class = CategorySerializer
-    permission_classes = [IsAuthenticated, ]
+    permission_classes = [IsAuthenticated, IsOwner, ]
 
     def get_queryset(self):
         queryset = Category.objects.all()
