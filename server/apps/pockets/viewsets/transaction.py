@@ -32,7 +32,7 @@ class TransactionViewSet(CreateModelMixin,
     permission_classes = [IsAuthenticated, IsOwner, ]
 
     def get_queryset(self):
-        return self.filter_queryset(Transaction.objects.all())
+        return self.filter_queryset(Transaction.objects.filter(owner=self.request.user))
 
     @action(detail=False, methods=['GET'])
     def global_info(self, request):

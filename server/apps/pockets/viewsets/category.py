@@ -22,12 +22,13 @@ class CategoryViewSet(CreateModelMixin,
                       ListModelMixin,
                       GenericViewSet):
     serializer_class = CategorySerializer
+    filter_backends = (DjangoFilterBackend,)
+
     permission_classes = [IsAuthenticated, IsOwner, ]
 
     def get_queryset(self):
-        queryset = Category.objects.all()
+        queryset = Category.objects.filter(owner=self.request.user)
         if self.action == 'get_all_categories_info':
-            self.filter_backends = (DjangoFilterBackend,)
             self.filterset_class = CategoryFilter
             queryset = self.filter_queryset(
                 queryset.annotate(

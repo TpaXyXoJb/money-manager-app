@@ -9,3 +9,10 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ('id', 'name', 'owner', 'category_type', 'amount')
+        read_only_fields = ('id', 'owner')
+
+    def create(self, validated_data):
+        validated_data['owner'] = self.context['request'].user
+        category = Category.objects.create(**validated_data)
+        category.save()
+        return category

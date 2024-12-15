@@ -25,3 +25,10 @@ class WidgetSerializer(serializers.ModelSerializer):
             'end_date',
             'amount',
         )
+        read_only_fields = ('id', 'owner')
+
+    def create(self, validated_data):
+        validated_data['owner'] = self.context['request'].user
+        widget = Widget.objects.create(**validated_data)
+        widget.save()
+        return widget

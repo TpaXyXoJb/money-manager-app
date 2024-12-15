@@ -24,7 +24,7 @@ class WidgetViewSet(CreateModelMixin,
     permission_classes = [IsAuthenticated, IsOwner, ]
 
     def get_queryset(self):
-        queryset = Widget.objects.all()
+        queryset = Widget.objects.filter(owner=self.request.user)
         if self.action == 'list':
             queryset = queryset.annotate(
                 amount=Coalesce(

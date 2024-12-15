@@ -9,3 +9,10 @@ class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transaction
         fields = ('id', 'owner', 'category', 'amount', 'date', 'category_type')
+        read_only_fields = ('id', 'owner')
+
+    def create(self, validated_data):
+        validated_data['owner'] = self.context['request'].user
+        transaction = Transaction(**validated_data)
+        transaction.save()
+        return transaction
