@@ -31,42 +31,91 @@ README
 
 * `sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose`
 
-### Fabric
+### Создание окружения для локальной разработки
 
-Файл `fabfile.py` содержит ряд функций, которые помогают при локальной разработке.
+##### Копирование файлов репозитория на локальную машину
 
-##### Установка
+```
+$ git clone https://gitlab.com/<название репозитория>.git
+$ cd <название репозитория>
+```
 
-* `sudo pip install Fabric3`
+##### Создание и запуск контейнеров
 
-##### Команды fabric
+```
+$ docker-compose up 
+```
+_**Примечание:** остановка контейнеров по CRTL+C._
 
-* `fab dev` - запустить локально веб приложение
-* `fab makemigrations` - создать файл миграций
-* `fab migrate` - применить миграции
-* `fab createsuperuser` - создать супер пользователя
-* `fab shell` - зайти в shell django приложения
-* `fab bash` - зайти в bash контейнера server
-* `fab kill` - остановить все запущенные контейнеры
+##### Инициализация базы данных (применение миграций)
+```
+$ docker-compose exec server python manage.py makemigrations
+$ docker-compose exec server python manage.py migrate
+```
+_**Примечание:** если контейнеры запущены не в режиме демона, ввод команд производится в новом терминале._
 
-### Локальная разработка
+##### Создание пользователя (superuser)
+```
+$ docker-compose exec server python manage.py createsuperuser
+```
+_**Примечание:** при выполнении данной команды вам необходимо ввести данные нового пользователя. Обязательно сохраните эти данные._
 
-##### Команды для первого запуска
+##### Проверка запуска контейнеров
 
-* `docker-compose build` - создать контейнеры docker
-* `fab dev` - запустить веб приложение
-* `fab migrate` - применить миграции
+```
+$ docker-compose ps
+                    Name                                   Command               State                    Ports                  
+---------------------------------------------------------------------------------------------------------------------------------
+miniproject-stub-python_db_1       docker-entrypoint.sh postgres    Up      5432/tcp                                
+miniproject-stub-python_server_1   python manage.py runserver ...   Up      0.0.0.0:8000->8000/tcp,:::8000->8000/tcp
 
-##### Команды для последующего запуска
+```
 
-* `fab dev` - зупустить веб приложение
-* `fab migrate` - применить миграции
+##### Проверка доступности панели администратора
 
-**Примечание**: при добавлении каких-либо зависимостей в проект или изменении Dockerfile, необходимо пересобрать контейнер с веб-приложением `docker-compose build server`
+Открыть в браузере страницу [http://0.0.0.0:8000/admin/](http://0.0.0.0:8000/admin/) и выполнить вход в систему с учетными данными пользователя (superuser)
 
-##### Доступ
+##### Проверка доступности api
 
-* http://localhost:8000
+Открыть в браузере страницу [http://localhost:8000/api/users/me/](http://localhost:8000/api/users/me/) и проверить, что страница с документацией по api отображается корректно.
+
+---------------------
+
+### Разработка
+
+##### Справка по командам docker-compose
+
+_**Примечание:** в зависимости от способа установки, версии docker-compose могут иметь различие в вводе основной команды ("docker-compose" или "docker compose") - [подробности](https://docs.docker.com/compose/#compose-v2-and-the-new-docker-compose-command)._ 
+
+Запустить контейнеры в режиме демона
+```
+$ docker-compose up -d
+```
+Подключиться к запущенному контейнеру сервера
+```
+$ docker-compose exec server /bin/bash
+```
+Создать файл миграции
+```
+$ docker-compose exec server python manage.py makemigrations
+```
+Применить миграции
+```
+$ docker-compose exec server python manage.py migrate
+```
+Остановить контейнеры
+```
+$ docker-compose stop
+```
+Пересобрать и запустить контейнеры
+```
+$ docker-compose up --build
+```
+Выполнить сборку контейнера сервера
+```
+$ docker-compose build server
+```
+[Документация по командам docker-compose](https://docs.docker.com/engine/reference/commandline/compose/)
 
 ### Развертывание веб-приложения на сервере (работа с nginx)
 

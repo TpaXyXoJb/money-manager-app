@@ -4,6 +4,9 @@ from ..models.category import Category
 
 
 class CategorySerializer(serializers.ModelSerializer):
+    """
+    Serializer for the category model
+    """
     amount = fields.DecimalField(max_digits=12, decimal_places=2, read_only=True)
 
     class Meta:

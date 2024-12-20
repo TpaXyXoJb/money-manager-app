@@ -4,6 +4,9 @@ from rest_framework.authtoken.models import Token
 
 
 class User(AbstractUser):
+    """
+    User model
+    """
     email = models.EmailField(
         unique=True,
         verbose_name='Email'

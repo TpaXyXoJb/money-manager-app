@@ -6,6 +6,8 @@ from rest_framework.status import HTTP_200_OK
 from rest_framework.mixins import (CreateModelMixin,
                                    DestroyModelMixin,
                                    ListModelMixin)
+from drf_yasg.utils import swagger_auto_schema
+
 
 from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Sum, Value, DecimalField
@@ -15,8 +17,10 @@ from ..models.category import Category
 from ..serializers.category import CategorySerializer
 from ..filters.category import CategoryFilter
 from ..permissions import IsOwner
+from .swagger_docs import swagger_category_viewset, swagger_all_categories_info
 
 
+@swagger_auto_schema(**swagger_category_viewset)
 class CategoryViewSet(CreateModelMixin,
                       DestroyModelMixin,
                       ListModelMixin,
@@ -41,6 +45,7 @@ class CategoryViewSet(CreateModelMixin,
             )
         return queryset
 
+    @swagger_auto_schema(**swagger_all_categories_info)
     @action(detail=False, methods=['GET'])
     def get_all_categories_info(self, request):
         serializer = self.get_serializer(self.get_queryset(), many=True)

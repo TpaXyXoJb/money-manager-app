@@ -14,8 +14,10 @@ from drf_yasg.utils import swagger_auto_schema
 from ..models.widget import Widget
 from ..serializers.widget import WidgetSerializer
 from ..permissions import IsOwner
+from .swagger_docs import swagger_widget_viewset
 
 
+@swagger_auto_schema(**swagger_widget_viewset)
 class WidgetViewSet(CreateModelMixin,
                     DestroyModelMixin,
                     ListModelMixin,

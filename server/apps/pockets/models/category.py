@@ -2,6 +2,9 @@ from django.db import models
 
 
 class Category(models.Model):
+    """
+    Category model
+    """
     INCOME = 'IN'
     EXPENSE = 'EXP'
     CATEGORY_CHOICES = [

@@ -4,6 +4,9 @@ from ..models.transaction import Transaction
 
 
 class TransactionSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the Transaction model.
+    """
     category_type = fields.CharField(source='category.category_type', read_only=True)
 
     class Meta:

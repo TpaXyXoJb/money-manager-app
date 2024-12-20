@@ -18,8 +18,10 @@ from ..serializers.transaction import TransactionSerializer
 from ..filters.transaction import TransactionFilter
 from ..paginators import TransactionSetPagination
 from ..permissions import IsOwner
+from .swagger_docs import swagger_transaction_viewset, swagger_transaction_global_info
 
 
+@swagger_auto_schema(**swagger_transaction_viewset)
 class TransactionViewSet(CreateModelMixin,
                          UpdateModelMixin,
                          DestroyModelMixin,
@@ -34,6 +36,7 @@ class TransactionViewSet(CreateModelMixin,
     def get_queryset(self):
         return self.filter_queryset(Transaction.objects.filter(owner=self.request.user))
 
+    @swagger_auto_schema(**swagger_transaction_global_info)
     @action(detail=False, methods=['GET'])
     def global_info(self, request):
         queryset = self.get_queryset().aggregate(

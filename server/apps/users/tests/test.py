@@ -19,6 +19,9 @@ def api_client():
 
 @pytest.mark.django_db
 def test_user_registration(api_client):
+    """
+    Test creating user success
+    """
     data = {
         'username': 'testuser',
         'email': 'testuser@example.com',
@@ -32,6 +35,9 @@ def test_user_registration(api_client):
 
 @pytest.mark.django_db
 def test_user_registration_missing(api_client):
+    """
+    Test creating user without password unavailable
+    """
     data = {
         'username': 'testuser',
     }
@@ -43,6 +49,9 @@ def test_user_registration_missing(api_client):
 
 @pytest.mark.django_db
 def test_obtain_tokens(test_user, api_client):
+    """
+    Test getting tokens when authenticated
+    """
     data = {
         'email': test_user.email,
         'password': 'testuserpassword123',
@@ -55,6 +64,9 @@ def test_obtain_tokens(test_user, api_client):
 
 @pytest.mark.django_db
 def test_authorization_with_token(test_user, api_client):
+    """
+    Test authorizing with token
+    """
     data = {
         'email': test_user.email,
         'password': 'testuserpassword123',
@@ -70,6 +82,9 @@ def test_authorization_with_token(test_user, api_client):
 
 @pytest.mark.django_db
 def test_authorization_with_invalid_data(test_user, api_client):
+    """
+    Test authorizing with invalid data is unavailable
+    """
     data = {
         'email': 'wrongemail@test.com',
         'password': 'testuserpassword123'
@@ -91,5 +106,8 @@ def test_authorization_with_invalid_data(test_user, api_client):
 
 @pytest.mark.django_db
 def test_get_user_data_unauthorized(api_client):
+    """
+    Test getting user data without authorization
+    """
     response = api_client.get(reverse('user_summary'))
     assert response.status_code == status.HTTP_401_UNAUTHORIZED

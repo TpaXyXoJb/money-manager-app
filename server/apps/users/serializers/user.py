@@ -4,6 +4,9 @@ from ..models import User
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
+    """
+    Serializer for creating user
+    """
     class Meta:
         model = User
         fields = ('username', 'email', 'password')
@@ -16,6 +19,9 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
 
 class UserSummarySerializer(serializers.ModelSerializer):
+    """
+    Serializer for user summary
+    """
     class Meta:
         model = User
         fields = ('username',)

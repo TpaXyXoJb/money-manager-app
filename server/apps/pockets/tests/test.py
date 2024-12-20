@@ -25,6 +25,9 @@ def authenticated_client():
 
 @pytest.mark.django_db
 def test_create_category_authenticated(authenticated_client):
+    """
+    Test creating a category as an authenticated user
+    """
     data = {
         'name': 'test category',
         'category_type': 'IN'
@@ -41,6 +44,9 @@ def test_create_category_authenticated(authenticated_client):
 
 @pytest.mark.django_db
 def test_create_category_unauthenticated():
+    """
+    Test that an unauthenticated user cannot create a category
+    """
     unauthenticated_client = APIClient()
 
     data = {
@@ -55,6 +61,9 @@ def test_create_category_unauthenticated():
 
 @pytest.mark.django_db
 def test_category_list(authenticated_client):
+    """
+    Test retrieving a list of categories for authenticated user
+    """
     CategoryFactory.create_batch(3, owner=authenticated_client.user)
     response = authenticated_client.get(reverse('category-list'))
     assert response.status_code == status.HTTP_200_OK
@@ -63,6 +72,9 @@ def test_category_list(authenticated_client):
 
 @pytest.mark.django_db
 def test_category_delete_only_owner(authenticated_client):
+    """
+    Test deleting a category by its owner
+    """
     category = CategoryFactory(owner=authenticated_client.user)
     other_user_category = CategoryFactory()
     unauthenticated_client = APIClient()
@@ -85,6 +97,9 @@ def test_category_delete_only_owner(authenticated_client):
 
 @pytest.mark.django_db
 def test_get_all_categories_info(authenticated_client):
+    """
+    Test retrieving all categories with aggregated transaction amounts
+    """
     category1 = CategoryFactory(owner=authenticated_client.user)
     category2 = CategoryFactory(owner=authenticated_client.user)
     TransactionFactory.create_batch(3, category=category1, amount=100)
@@ -101,6 +116,10 @@ def test_get_all_categories_info(authenticated_client):
 
 @pytest.mark.django_db
 def test_get_all_categories_info_unauthenticated():
+    """
+    Test that unauthenticated users have no access to get all categories info
+    :return:
+    """
     unauthenticated_client = APIClient()
 
     response = unauthenticated_client.get(reverse('category-get-all-categories-info'))
@@ -110,6 +129,9 @@ def test_get_all_categories_info_unauthenticated():
 
 @pytest.mark.django_db
 def test_create_transaction_authenticated(authenticated_client):
+    """
+    Test creating a transaction as an authenticated user
+    """
     category = CategoryFactory(owner=authenticated_client.user, category_type='EXP')
 
     data = {
@@ -129,6 +151,9 @@ def test_create_transaction_authenticated(authenticated_client):
 
 @pytest.mark.django_db
 def test_create_transaction_unauthenticated():
+    """
+    Test that an unauthenticated user cannot create a transaction
+    """
     unauthenticated_client = APIClient()
 
     category = CategoryFactory()
@@ -145,6 +170,9 @@ def test_create_transaction_unauthenticated():
 
 @pytest.mark.django_db
 def test_transaction_list_authenticated(authenticated_client):
+    """
+    Test retrieving a list of transactions for authenticated user
+    """
     TransactionFactory.create_batch(3, owner=authenticated_client.user)
     TransactionFactory.create_batch(2)
 
@@ -159,6 +187,9 @@ def test_transaction_list_authenticated(authenticated_client):
 
 @pytest.mark.django_db
 def test_transaction_list_unauthenticated():
+    """
+    Test that unauthenticated user cannot get access for a list of transactions
+    """
     TransactionFactory.create_batch(3)
 
     unauthenticated_client = APIClient()
@@ -171,6 +202,9 @@ def test_transaction_list_unauthenticated():
 
 @pytest.mark.django_db
 def test_transaction_list_filter_by_category(authenticated_client):
+    """
+    Test case for filtering transactions by category
+    """
     category = CategoryFactory(owner=authenticated_client.user)
     TransactionFactory.create_batch(2, owner=authenticated_client.user, category=category)
     TransactionFactory.create_batch(3, owner=authenticated_client.user)
@@ -185,6 +219,9 @@ def test_transaction_list_filter_by_category(authenticated_client):
 
 @pytest.mark.django_db
 def test_transaction_list_pagination(authenticated_client):
+    """
+    Test validating pagination in the transaction list endpoint
+    """
     TransactionFactory.create_batch(50, owner=authenticated_client.user)
 
     response = authenticated_client.get(reverse('transaction-list'), {'page': 1})
@@ -198,6 +235,9 @@ def test_transaction_list_pagination(authenticated_client):
 
 @pytest.mark.django_db
 def test_transaction_delete_only_owner(authenticated_client):
+    """
+    Test deleting a transaction by its owner
+    """
     transaction = TransactionFactory(owner=authenticated_client.user)
     other_user_transaction = TransactionFactory()
     unauthenticated_client = APIClient()
@@ -219,6 +259,9 @@ def test_transaction_delete_only_owner(authenticated_client):
 
 @pytest.mark.django_db
 def test_transaction_update_only_owner(authenticated_client):
+    """
+    Test updating a transaction by its owner
+    """
     transaction = TransactionFactory(owner=authenticated_client.user)
     other_user_transaction = TransactionFactory()
     unauthenticated_client = APIClient()
@@ -243,6 +286,9 @@ def test_transaction_update_only_owner(authenticated_client):
 
 @pytest.mark.django_db
 def test_global_info_action(authenticated_client):
+    """
+    Test retrieving global income and expense summaries
+    """
     TransactionFactory.create_batch(3, owner=authenticated_client.user, category__category_type='IN', amount=100)
     TransactionFactory.create_batch(2, owner=authenticated_client.user, category__category_type='EXP', amount=50)
 
@@ -257,6 +303,9 @@ def test_global_info_action(authenticated_client):
 
 @pytest.mark.django_db
 def test_global_info_action_no_transaction(authenticated_client):
+    """
+    Test retrieving global income and expense summaries when there are no transactions
+    """
     response = authenticated_client.get(reverse('transaction-global-info'))
 
     assert response.status_code == status.HTTP_200_OK
@@ -266,6 +315,9 @@ def test_global_info_action_no_transaction(authenticated_client):
 
 @pytest.mark.django_db
 def test_global_info_action_other_user_transaction(authenticated_client):
+    """
+    Test ensuring that transactions from other users are excluded in global info
+    """
     TransactionFactory.create_batch(2, owner=authenticated_client.user, category__category_type='IN', amount=100)
     TransactionFactory.create_batch(3, category__category_type='EXP', amount=50)
 
@@ -278,6 +330,9 @@ def test_global_info_action_other_user_transaction(authenticated_client):
 
 @pytest.mark.django_db
 def test_create_widget_authenticated(authenticated_client):
+    """
+    Test creating a widget as an authenticated user
+    """
     category = CategoryFactory(owner=authenticated_client.user)
     data = {
         'category': category.id,
@@ -301,6 +356,9 @@ def test_create_widget_authenticated(authenticated_client):
 
 @pytest.mark.django_db
 def test_create_widget_unauthenticated():
+    """
+    Test that an unauthenticated user cannot create a widget
+    """
     category = CategoryFactory()
     data = {
         'category': category.id,
@@ -319,6 +377,9 @@ def test_create_widget_unauthenticated():
 
 @pytest.mark.django_db
 def test_widget_list(authenticated_client):
+    """
+    Test retrieving a list of widgets for authenticated user
+    """
     WidgetFactory.create_batch(3, owner=authenticated_client.user)
     WidgetFactory.create_batch(2)
     response = authenticated_client.get(reverse('widget-list'))
@@ -331,6 +392,9 @@ def test_widget_list(authenticated_client):
 
 @pytest.mark.django_db
 def test_widget_delete_only_owner(authenticated_client):
+    """
+    Test deleting a widget by its owner
+    """
     widget = WidgetFactory(owner=authenticated_client.user)
     other_user_widget = WidgetFactory()
     unauthenticated_client = APIClient()

@@ -2,6 +2,9 @@ from django.db import models
 
 
 class Transaction(models.Model):
+    """
+    Transaction model
+    """
     owner = models.ForeignKey(
         to='users.User',
         on_delete=models.CASCADE,

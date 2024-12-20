@@ -3,6 +3,9 @@ from datetime import timedelta
 
 
 class Widget(models.Model):
+    """
+    Widget model
+    """
     GT = '>'
     LT = '<'
     CRITERION_CHOICES = [
