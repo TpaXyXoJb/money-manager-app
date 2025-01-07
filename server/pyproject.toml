@@ -4,6 +4,7 @@ version = "0.1.0"
 description = ""
 authors = ["Your name <you@example.com>"]
 
+
 [tool.poetry.dependencies]
 python = "^3.9"
 Django = "3.2.2"
@@ -35,6 +36,10 @@ flake8-quotes = "3.2.0"
 flake8-cognitive-complexity = "0.1.0"
 flake8-bugbear = "21.4.3"
 isort = "5.8.0"
+
+
+
+
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

@@ -27,6 +27,9 @@ class TransactionViewSet(CreateModelMixin,
                          DestroyModelMixin,
                          ListModelMixin,
                          GenericViewSet):
+    """
+    Transaction viewset
+    """
     serializer_class = TransactionSerializer
     pagination_class = TransactionSetPagination
     filter_backends = (DjangoFilterBackend,)

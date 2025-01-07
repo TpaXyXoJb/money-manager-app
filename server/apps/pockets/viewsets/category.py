@@ -25,6 +25,9 @@ class CategoryViewSet(CreateModelMixin,
                       DestroyModelMixin,
                       ListModelMixin,
                       GenericViewSet):
+    """
+    Category Viewset
+    """
     serializer_class = CategorySerializer
     filter_backends = (DjangoFilterBackend,)
 

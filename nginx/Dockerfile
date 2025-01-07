@@ -2,12 +2,10 @@ FROM python:3.9.4-slim AS server
 
 WORKDIR /server
 
-COPY ./server/pyproject.toml /server/
-COPY ./server/poetry.lock /server/
-
-RUN pip install poetry && poetry config virtualenvs.create false && poetry install --no-dev
-
 COPY ./server /server
+
+RUN pip install poetry && poetry config virtualenvs.create false && poetry install --without dev --no-root
+
 
 RUN python ./manage.py collectstatic --noinput
 

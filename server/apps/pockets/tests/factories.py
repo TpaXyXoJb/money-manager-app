@@ -8,6 +8,9 @@ from apps.pockets.models.widget import Widget
 
 
 class CategoryFactory(factory.django.DjangoModelFactory):
+    """
+    Factory for Category tests
+    """
     class Meta:
         model = Category
 
@@ -17,6 +20,9 @@ class CategoryFactory(factory.django.DjangoModelFactory):
 
 
 class TransactionFactory(factory.django.DjangoModelFactory):
+    """
+    Factory for Transaction tests
+    """
     class Meta:
         model = Transaction
 
@@ -27,6 +33,9 @@ class TransactionFactory(factory.django.DjangoModelFactory):
 
 
 class WidgetFactory(factory.django.DjangoModelFactory):
+    """
+    Factory for Widget tests
+    """
     class Meta:
         model = Widget
 

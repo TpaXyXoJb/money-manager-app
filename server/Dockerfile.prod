@@ -6,6 +6,6 @@ WORKDIR /server
 COPY ./server/pyproject.toml /server/
 COPY ./server/poetry.lock /server/
 
-RUN poetry install --no-dev
+RUN poetry install --without dev
 
 COPY ./server /server

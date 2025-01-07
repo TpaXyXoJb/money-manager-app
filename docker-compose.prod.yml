@@ -20,6 +20,7 @@ services:
       command: gunicorn config.wsgi -c ./config/gunicorn.py
       volumes:
         - ./server/media:/server/media
+        - ./server/static:/server/static
       depends_on:
         - db
       environment:

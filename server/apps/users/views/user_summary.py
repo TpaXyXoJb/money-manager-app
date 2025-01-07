@@ -6,6 +6,9 @@ from ..serializers import UserSummarySerializer
 
 
 class UserSummaryAPIView(generics.RetrieveAPIView):
+    """
+    User summary view
+    """
     permission_classes = (IsAuthenticated,)
     serializer_class = UserSummarySerializer
 

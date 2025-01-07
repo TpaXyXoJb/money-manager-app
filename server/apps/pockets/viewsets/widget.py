@@ -22,6 +22,9 @@ class WidgetViewSet(CreateModelMixin,
                     DestroyModelMixin,
                     ListModelMixin,
                     GenericViewSet):
+    """
+    Widget viewset
+    """
     serializer_class = WidgetSerializer
     permission_classes = [IsAuthenticated, IsOwner, ]
 

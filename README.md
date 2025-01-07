@@ -115,6 +115,10 @@ $ docker-compose up --build
 ```
 $ docker-compose build server
 ```
+Запустить тесты 
+```
+$ docker-compose exec server pytest
+```
 [Документация по командам docker-compose](https://docs.docker.com/engine/reference/commandline/compose/)
 
 ### Развертывание веб-приложения на сервере (работа с nginx)
